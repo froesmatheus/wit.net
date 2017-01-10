@@ -10,19 +10,21 @@ namespace Wit
 {
     public class Wit
     {
-        private string WIT_API_HOST = "https://api.wit.ai";
-        private string WIT_API_VERSION = "20170107";
+        public string WIT_API_HOST = "https://api.wit.ai";
+        public string WIT_API_VERSION = "20170107";
+        public string LEARN_MORE = "Learn more at https://wit.ai/docs/quickstart";
+
 
         private RestClient client;
-        private Dictionary<int, int> sessions;
-        private Dictionary<string, Func<string[]>> actions;
+        private Dictionary<string, int> sessions;
+        private WitAction actions = new WitAction();
 
-        public Wit(string accessToken, Dictionary<string, Func<string[]>> actions = null)
+        public Wit(string accessToken, WitAction actions = null)
         {
             client = PrepareRestClient(accessToken);
 
-            sessions = new Dictionary<int, int>();
-            
+            sessions = new Dictionary<string, int>();
+
             if (actions != null)
             {
                 this.actions = ValidateActions(actions);
@@ -40,7 +42,7 @@ namespace Wit
             return restClient;
         }
 
-        private Dictionary<string, Func<string[]>> ValidateActions(Dictionary<string, Func<string[]>> actions)
+        private WitAction ValidateActions(WitAction actions)
         {
             if (!actions.ContainsKey("send"))
             {
@@ -61,15 +63,16 @@ namespace Wit
             return response;
         }
 
-        public ConverseResponse Converse(int sessionId, string message, Dictionary<string, dynamic> context, bool verbose = true)
+        public ConverseResponse Converse(string sessionId, string message, WitContext context, bool verbose = true)
         {
             if (context == null)
             {
-                context = new Dictionary<string, dynamic>();
+                context = new WitContext();
             }
 
             var request = new RestRequest("converse", Method.POST);
             request.AddQueryParameter("q", message);
+            request.AddQueryParameter("session_id", sessionId);
 
             IRestResponse responseObject = client.Execute(request);
             ConverseResponse response = JsonConvert.DeserializeObject<ConverseResponse>(responseObject.Content);
@@ -77,12 +80,18 @@ namespace Wit
             return response;
         }
 
-        public Dictionary<string, dynamic> RunActions(int sessionId, string message, Dictionary<string, dynamic> context,
+        public WitContext RunActions(string sessionId, string message, WitContext context,
                                                       int maxSteps = 5, bool verbose = true)
         {
+            if (this.actions == null)
+            {
+                ThrowMustHaveActions();
+            }
+
+
             if (context == null)
             {
-                context = new Dictionary<string, dynamic>();
+                context = new WitContext();
             }
 
             /** Figuring out whether we need to reset the last turn.
@@ -108,8 +117,8 @@ namespace Wit
         }
 
 
-        private Dictionary<string, dynamic> _RunActions(int sessionId, int currentRequest,
-                                                    string message, Dictionary<string, dynamic> context, int maxSteps = 5, bool verbose = true)
+        private WitContext _RunActions(string sessionId, int currentRequest,
+                                                    string message, WitContext context, int maxSteps = 5, bool verbose = true)
         {
 
             if (maxSteps <= 0)
@@ -162,11 +171,17 @@ namespace Wit
                     ConverseResponse response = new ConverseResponse();
                     response.Msg = json.Msg;
                     response.QuickReplies = json.QuickReplies;
-                    actions["send"].Invoke();
+                    actions["send"](request, response);
                     break;
                 case "action":
-                    string action = response.Action;
-                    context = actions[action];
+                    string action = json.Action;
+                    context = this.actions[action](request, null);
+
+                    if (context == null)
+                    {
+                        Console.WriteLine("missing context - did you forget to return it?");
+                        context = new WitContext();
+                    }
                     break;
                 default:
                     throw new WitException($"unknown type:  {json.Type}");
@@ -177,7 +192,20 @@ namespace Wit
                 return context;
             }
 
-            return _RunActions(sessionId, currentRequest, null, context, maxSteps, verbose);
+            return _RunActions(sessionId, currentRequest, null, context, maxSteps - 1, verbose);
+        }
+
+        private void ThrowIfActionMissing(string actionName)
+        {
+            if (!this.actions.ContainsKey("actionName"))
+            {
+                throw new WitException($"unknown action {actionName}");
+            }
+        }
+
+        private void ThrowMustHaveActions()
+        {
+            throw new WitException($"You must provide the 'actions' parameter to be able to use runActions. ${LEARN_MORE}");
         }
     }
 }

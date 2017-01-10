@@ -1,0 +1,9 @@
+C:\Users\matheus_froes\Documents\Visual Studio 2015\Projects\wit.net\obj\Debug\Wit.NET.csprojResolveAssemblyReference.cache
+C:\Users\matheus_froes\Documents\Visual Studio 2015\Projects\wit.net\bin\Debug\Wit.NET.dll
+C:\Users\matheus_froes\Documents\Visual Studio 2015\Projects\wit.net\bin\Debug\Wit.NET.pdb
+C:\Users\matheus_froes\Documents\Visual Studio 2015\Projects\wit.net\bin\Debug\Newtonsoft.Json.dll
+C:\Users\matheus_froes\Documents\Visual Studio 2015\Projects\wit.net\bin\Debug\RestSharp.dll
+C:\Users\matheus_froes\Documents\Visual Studio 2015\Projects\wit.net\bin\Debug\Newtonsoft.Json.xml
+C:\Users\matheus_froes\Documents\Visual Studio 2015\Projects\wit.net\bin\Debug\RestSharp.xml
+C:\Users\matheus_froes\Documents\Visual Studio 2015\Projects\wit.net\obj\Debug\Wit.NET.dll
+C:\Users\matheus_froes\Documents\Visual Studio 2015\Projects\wit.net\obj\Debug\Wit.NET.pdb

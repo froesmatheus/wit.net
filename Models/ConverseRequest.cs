@@ -9,10 +9,10 @@ namespace Wit.Models
 {
     public class ConverseRequest
     {
-        public int SessionId { get; set; }
+        public string SessionId { get; set; }
         [JsonProperty("q")]
         public string Message { get; set; }
-        public Dictionary<string, dynamic> Context { get; set; }
+        public WitContext Context { get; set; }
         public Dictionary<string, JArray> Entities { get; set; }
 
         public ConverseRequest()
@@ -20,7 +20,7 @@ namespace Wit.Models
 
         }
 
-        public ConverseRequest(int sessionId, string message, Dictionary<string, dynamic> context)
+        public ConverseRequest(string sessionId, string message, WitContext context)
         {
             this.SessionId = sessionId;
             this.Message = message;

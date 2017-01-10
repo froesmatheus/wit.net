@@ -4,10 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Wit.NET
+namespace Wit.Models
 {
-    class Context
-    {
-        public Dictionary<string, dynamic> Items { get; set; }
-    }
+    public class WitContext : Dictionary<string, dynamic> { }
 }
