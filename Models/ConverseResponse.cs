@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace MagisterBotApi.Models
+namespace Wit.Models
 {
     public class ConverseResponse
     {

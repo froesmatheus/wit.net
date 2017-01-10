@@ -1,19 +1,17 @@
-﻿using MagisterBotApi.Models;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Wit.NET;
+using Wit.Models;
 
-namespace MagisterBotApi
+namespace Wit
 {
     public class Wit
     {
         private string WIT_API_HOST = "https://api.wit.ai";
         private string WIT_API_VERSION = "20170107";
-        private int DEFAULT_MAX_STEPS = 5;
         private string LEARN_MORE = "Learn more at https://wit.ai/docs/quickstart";
 
 
@@ -31,14 +29,12 @@ namespace MagisterBotApi
             {
                 this.actions = ValidateActions(actions);
             }
-
-            this.actions = new Dictionary<string, dynamic>();
         }
 
         private RestClient PrepareRestClient(string accessToken)
         {
             RestClient restClient = new RestClient(WIT_API_HOST);
-            restClient.AddDefaultHeader("Authorization", string.Format("Bearer {0}", accessToken));
+            restClient.AddDefaultHeader("Authorization", $"Bearer {accessToken}");
             restClient.AddDefaultHeader("Content-Type", "application/json");
             restClient.AddDefaultHeader("Accept", "application/json");
             restClient.AddDefaultParameter("v", WIT_API_VERSION, ParameterType.QueryString);
