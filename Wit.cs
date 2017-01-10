@@ -12,14 +12,12 @@ namespace Wit
     {
         private string WIT_API_HOST = "https://api.wit.ai";
         private string WIT_API_VERSION = "20170107";
-        private string LEARN_MORE = "Learn more at https://wit.ai/docs/quickstart";
-
 
         private RestClient client;
         private Dictionary<int, int> sessions;
-        private Dictionary<string, dynamic> actions;
+        private Dictionary<string, Func<string[]>> actions;
 
-        public Wit(string accessToken, Dictionary<string, dynamic> actions = null)
+        public Wit(string accessToken, Dictionary<string, Func<string[]>> actions = null)
         {
             client = PrepareRestClient(accessToken);
 
@@ -42,7 +40,7 @@ namespace Wit
             return restClient;
         }
 
-        private Dictionary<string, dynamic> ValidateActions(Dictionary<string, dynamic> actions)
+        private Dictionary<string, Func<string[]>> ValidateActions(Dictionary<string, Func<string[]>> actions)
         {
             if (!actions.ContainsKey("send"))
             {
@@ -161,9 +159,10 @@ namespace Wit
             {
 
                 case "msg":
-                    Dictionary<string, dynamic> response = new Dictionary<string, dynamic>();
-                    response["text"] = json.Msg;
-                    response["quickreplies"] = json.QuickReplies;
+                    ConverseResponse response = new ConverseResponse();
+                    response.Msg = json.Msg;
+                    response.QuickReplies = json.QuickReplies;
+                    actions["send"].Invoke();
                     break;
                 case "action":
                     string action = response.Action;

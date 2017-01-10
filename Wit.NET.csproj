@@ -48,6 +48,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MainTests.cs" />
+    <Compile Include="Context.cs" />
     <Compile Include="Models\ConverseRequest.cs" />
     <Compile Include="Models\ConverseResponse.cs" />
     <Compile Include="Models\MessageRequest.cs" />
