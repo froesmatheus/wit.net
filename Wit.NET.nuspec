@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>MatheusFroes.Wit.NET</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>Matheus Fróes</authors>
+    <owners>Matheus Fróes</owners>
+    <licenseUrl>https://opensource.org/licenses/MIT</licenseUrl>
+    <projectUrl>https://github.com/froesmatheus/wit.net</projectUrl>
+    <iconUrl>https://avatars2.githubusercontent.com/u/4723433</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Wit.NET is the C# SDK for Wit.ai</description>
+    <releaseNotes>First release.</releaseNotes>
+    <copyright>Copyright 2017</copyright>
+    <tags>wit witai npl bot chatbot .net</tags>
+  </metadata>
+</package>

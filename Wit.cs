@@ -4,9 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Wit.Models;
+using WitAi.Models;
 
-namespace Wit
+namespace WitAi
 {
     public class Wit
     {
@@ -19,6 +19,10 @@ namespace Wit
         private Dictionary<string, int> sessions;
         private WitAction actions = new WitAction();
 
+        /// <summary>
+        /// Initializes new instance of Wit class
+        /// </summary>
+        /// <param name="accessToken">Client access token. You can grab it from your Wit console, under Settings\Access Token.</param>
         public Wit(string accessToken, WitAction actions = null)
         {
             client = PrepareRestClient(accessToken);
@@ -52,6 +56,12 @@ namespace Wit
             return actions;
         }
 
+        /// <summary>
+        /// Capture intent and entities from a text string
+        /// </summary>
+        /// <param name="msg">Text string to capture from</param>
+        /// <param name="verbose">Calls the API in Verbose Mode</param>
+        /// <returns>Message response</returns>
         public MessageResponse Message(string msg, bool verbose = true)
         {
             var request = new RestRequest("message", Method.GET);
