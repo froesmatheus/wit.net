@@ -17,13 +17,14 @@ namespace WitAi
 
         private RestClient client;
         private Dictionary<string, int> sessions;
-        private WitAction actions = new WitAction();
+        private WitActions actions = new WitActions();
 
         /// <summary>
         /// Initializes new instance of Wit class
         /// </summary>
         /// <param name="accessToken">Client access token. You can grab it from your Wit console, under Settings\Access Token.</param>
-        public Wit(string accessToken, WitAction actions = null)
+        /// <param name="actions">(optional if you only use message()) the dictionary with your actions. Actions has action names as keys and action implementations as values.</param>
+        public Wit(string accessToken, WitActions actions = null)
         {
             client = PrepareRestClient(accessToken);
 
@@ -46,7 +47,7 @@ namespace WitAi
             return restClient;
         }
 
-        private WitAction ValidateActions(WitAction actions)
+        private WitActions ValidateActions(WitActions actions)
         {
             if (!actions.ContainsKey("send"))
             {
@@ -135,8 +136,8 @@ namespace WitAi
             {
                 throw new WitException("Max steps reached, stopping.");
             }
-            ConverseResponse json = Converse(sessionId, message, context);
-            if (json.Type == null)
+            ConverseResponse json = Converse(sessionId, message, context, verbose);
+            if (json == null || json.Type == null )
             {
                 throw new WitException("Couldn\'t find type in Wit response");
             }
@@ -146,8 +147,7 @@ namespace WitAi
                 return context;
             }
 
-
-
+            
             // backwards-compatibility with API version 20160516
             if (json.Type == "merge")
             {
@@ -178,15 +178,19 @@ namespace WitAi
             {
 
                 case "msg":
+                    ThrowIfActionMissing("send");
+
                     ConverseResponse response = new ConverseResponse();
                     response.Msg = json.Msg;
                     response.QuickReplies = json.QuickReplies;
                     actions["send"](request, response);
+                    //actions["send"](request);
                     break;
                 case "action":
                     string action = json.Action;
+                    ThrowIfActionMissing(action);
                     context = this.actions[action](request, null);
-
+                    //context = this.actions[action](request);
                     if (context == null)
                     {
                         Console.WriteLine("missing context - did you forget to return it?");
@@ -207,7 +211,7 @@ namespace WitAi
 
         private void ThrowIfActionMissing(string actionName)
         {
-            if (!this.actions.ContainsKey("actionName"))
+            if (!this.actions.ContainsKey(actionName))
             {
                 throw new WitException($"unknown action {actionName}");
             }

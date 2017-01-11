@@ -48,7 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\WitAction.cs" />
+    <Compile Include="Models\WitActions.cs" />
     <Compile Include="Models\WitContext.cs" />
     <Compile Include="Models\ConverseRequest.cs" />
     <Compile Include="Models\ConverseResponse.cs" />

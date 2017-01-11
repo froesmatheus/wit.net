@@ -7,3 +7,12 @@ C:\Users\matheus_froes\Documents\Visual Studio 2015\Projects\wit.net\bin\Debug\N
 C:\Users\matheus_froes\Documents\Visual Studio 2015\Projects\wit.net\bin\Debug\RestSharp.xml
 C:\Users\matheus_froes\Documents\Visual Studio 2015\Projects\wit.net\obj\Debug\Wit.NET.dll
 C:\Users\matheus_froes\Documents\Visual Studio 2015\Projects\wit.net\obj\Debug\Wit.NET.pdb
+C:\Users\matheusfroes\Documents\Visual Studio 2015\Projects\Wit.NET\bin\Debug\Wit.NET.dll
+C:\Users\matheusfroes\Documents\Visual Studio 2015\Projects\Wit.NET\bin\Debug\Wit.NET.pdb
+C:\Users\matheusfroes\Documents\Visual Studio 2015\Projects\Wit.NET\bin\Debug\Newtonsoft.Json.dll
+C:\Users\matheusfroes\Documents\Visual Studio 2015\Projects\Wit.NET\bin\Debug\RestSharp.dll
+C:\Users\matheusfroes\Documents\Visual Studio 2015\Projects\Wit.NET\bin\Debug\Newtonsoft.Json.xml
+C:\Users\matheusfroes\Documents\Visual Studio 2015\Projects\Wit.NET\bin\Debug\RestSharp.xml
+C:\Users\matheusfroes\Documents\Visual Studio 2015\Projects\Wit.NET\obj\Debug\Wit.NET.csprojResolveAssemblyReference.cache
+C:\Users\matheusfroes\Documents\Visual Studio 2015\Projects\Wit.NET\obj\Debug\Wit.NET.dll
+C:\Users\matheusfroes\Documents\Visual Studio 2015\Projects\Wit.NET\obj\Debug\Wit.NET.pdb

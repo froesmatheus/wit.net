@@ -12,7 +12,7 @@ namespace WitAi.Models
         public string Msg { get; set; }
         public List<string> QuickReplies { get; set; }
         public string Action { get; set; }
-        public Dictionary<string, JArray> Entities { get; set; }
+        public Dictionary<string, dynamic> Entities { get; set; }
         public float Confidence { get; set; }
     }
 }

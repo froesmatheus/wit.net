@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wit.NET", "Wit.NET.csproj", "{B64A69F6-AFC0-46AE-A3AC-2F265C1172E0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApplication2", "..\ConsoleApplication2\ConsoleApplication2.csproj", "{5A4CC418-E5A2-499B-A10D-51F4E5D3A784}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{B64A69F6-AFC0-46AE-A3AC-2F265C1172E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B64A69F6-AFC0-46AE-A3AC-2F265C1172E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B64A69F6-AFC0-46AE-A3AC-2F265C1172E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A4CC418-E5A2-499B-A10D-51F4E5D3A784}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A4CC418-E5A2-499B-A10D-51F4E5D3A784}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A4CC418-E5A2-499B-A10D-51F4E5D3A784}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A4CC418-E5A2-499B-A10D-51F4E5D3A784}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

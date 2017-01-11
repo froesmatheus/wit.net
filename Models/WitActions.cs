@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace WitAi.Models
 {
-    public class WitAction : Dictionary<string, Func<ConverseRequest, ConverseResponse, WitContext>> {}
+    public class WitActions : Dictionary<string, Func<ConverseRequest, ConverseResponse, WitContext>> {}
 }

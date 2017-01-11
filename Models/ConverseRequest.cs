@@ -13,7 +13,7 @@ namespace WitAi.Models
         [JsonProperty("q")]
         public string Message { get; set; }
         public WitContext Context { get; set; }
-        public Dictionary<string, JArray> Entities { get; set; }
+        public Dictionary<string, dynamic> Entities { get; set; }
 
         public ConverseRequest()
         {
