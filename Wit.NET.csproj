@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\BotResponse.cs" />
     <Compile Include="Models\WitActions.cs" />
     <Compile Include="Models\WitContext.cs" />
     <Compile Include="Models\ConverseRequest.cs" />

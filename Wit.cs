@@ -82,7 +82,11 @@ namespace WitAi
             }
 
             var request = new RestRequest("converse", Method.POST);
-            request.AddQueryParameter("q", message);
+            request.AddJsonBody(context);
+            if (message != null)
+            {
+                request.AddQueryParameter("q", message);
+            }
             request.AddQueryParameter("session_id", sessionId);
 
             IRestResponse responseObject = client.Execute(request);
@@ -91,9 +95,10 @@ namespace WitAi
             return response;
         }
 
-        public WitContext RunActions(string sessionId, string message, WitContext context,
+        public BotResponse RunActions(string sessionId, string message, WitContext context,
                                                       int maxSteps = 5, bool verbose = true)
         {
+            BotResponse botResponse = new BotResponse(context);
             if (this.actions == null)
             {
                 ThrowMustHaveActions();
@@ -103,6 +108,7 @@ namespace WitAi
             if (context == null)
             {
                 context = new WitContext();
+                botResponse.Context = context;
             }
 
             /** Figuring out whether we need to reset the last turn.
@@ -116,7 +122,7 @@ namespace WitAi
             }
             sessions[sessionId] = currentRequest;
 
-            context = _RunActions(sessionId, currentRequest, message, context, maxSteps, verbose);
+            botResponse = _RunActions(sessionId, currentRequest, message, botResponse, maxSteps, verbose);
 
             // Cleaning up once the last call to run_actions finishes.
             if (currentRequest == sessions[sessionId])
@@ -124,27 +130,28 @@ namespace WitAi
                 sessions.Remove(sessionId);
             }
 
-            return context;
+            return botResponse;
         }
 
 
-        private WitContext _RunActions(string sessionId, int currentRequest,
-                                                    string message, WitContext context, int maxSteps = 5, bool verbose = true)
+        private BotResponse _RunActions(string sessionId, int currentRequest,
+                                                    string message, BotResponse response, int maxSteps = 5, bool verbose = true)
         {
-
             if (maxSteps <= 0)
             {
                 throw new WitException("Max steps reached, stopping.");
             }
-            ConverseResponse json = Converse(sessionId, message, context, verbose);
-            if (json == null || json.Type == null )
+            ConverseResponse json = Converse(sessionId, message, response.Context, verbose);
+            
+
+            if (json.Type == null )
             {
                 throw new WitException("Couldn\'t find type in Wit response");
             }
 
             if (currentRequest != sessions[sessionId])
             {
-                return context;
+                return response;
             }
 
             
@@ -162,14 +169,14 @@ namespace WitAi
 
             if (json.Type == "stop")
             {
-                return context;
+                return response;
             }
 
 
             ConverseRequest request = new ConverseRequest();
 
             request.SessionId = sessionId;
-            request.Context = context;
+            request.Context = response.Context;
             request.Message = message;
             request.Entities = json.Entities;
 
@@ -180,21 +187,23 @@ namespace WitAi
                 case "msg":
                     ThrowIfActionMissing("send");
 
-                    ConverseResponse response = new ConverseResponse();
-                    response.Msg = json.Msg;
-                    response.QuickReplies = json.QuickReplies;
-                    actions["send"](request, response);
+                    ConverseResponse converseResponse = new ConverseResponse();
+                    converseResponse.Msg = json.Msg;
+                    converseResponse.QuickReplies = json.QuickReplies;
+                    response.Message = converseResponse.Msg;
+
+                    actions["send"](request, converseResponse);
                     //actions["send"](request);
                     break;
                 case "action":
                     string action = json.Action;
                     ThrowIfActionMissing(action);
-                    context = this.actions[action](request, null);
+                    response.Context = this.actions[action](request, null);
                     //context = this.actions[action](request);
-                    if (context == null)
+                    if (response.Context == null)
                     {
                         Console.WriteLine("missing context - did you forget to return it?");
-                        context = new WitContext();
+                        response.Context = new WitContext();
                     }
                     break;
                 default:
@@ -203,10 +212,10 @@ namespace WitAi
 
             if (currentRequest != sessions[sessionId])
             {
-                return context;
+                return response;
             }
 
-            return _RunActions(sessionId, currentRequest, null, context, maxSteps - 1, verbose);
+            return _RunActions(sessionId, currentRequest, null, response, maxSteps - 1, verbose);
         }
 
         private void ThrowIfActionMissing(string actionName)
