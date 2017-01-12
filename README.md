@@ -4,6 +4,7 @@
 
 ## Install
 
+[NuGet Package](https://www.nuget.org/packages/MatheusFroes.Wit.NET)
 
 ## Usage
 
