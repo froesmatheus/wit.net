@@ -12,7 +12,7 @@ namespace WitAi
     {
         public string WIT_API_HOST = "https://api.wit.ai";
         public string WIT_API_VERSION = "20170107";
-        public string LEARN_MORE = "Learn more at https://wit.ai/docs/quickstart";
+        private string LEARN_MORE = "Learn more at https://wit.ai/docs/quickstart";
 
 
         private RestClient client;
