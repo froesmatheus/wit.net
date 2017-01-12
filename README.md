@@ -1,6 +1,6 @@
-# wit.net
+# Wit.NET
 
-`wit.net` is the C# SDK for [Wit.ai](http://wit.ai).
+`Wit.NET` is the C# SDK for [Wit.ai](http://wit.ai).
 
 ## Install
 
