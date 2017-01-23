@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>MatheusFroes.Wit.NET</id>
+    <id>Wit.NET</id>
     <version>$version$</version>
     <title>$title$</title>
     <authors>Matheus Fróes</authors>
