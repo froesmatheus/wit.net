@@ -95,7 +95,7 @@ namespace WitAi
             return response;
         }
 
-        public void Interactive(WitContext context, int maxSteps = 5)
+        public void Interactive(WitContext context = null, int maxSteps = 5)
         {
             /*Runs interactive command line chat between user and bot. Runs
               indefinately until EOF is entered to the prompt.
