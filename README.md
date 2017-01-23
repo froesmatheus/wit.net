@@ -102,3 +102,7 @@ Console.WriteLine("Yay, got Wit.ai response: " + resp)
 ```
 
 See the [docs](https://wit.ai/docs) for more information.
+
+### Contribute
+
+If you would like to contribute to this project, just send a pull request, open an issue or email me
