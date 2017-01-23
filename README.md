@@ -23,6 +23,7 @@ You can target a specific version by setting the variable `WIT_API_VERSION`.
 * `Message` - the Wit [message API](https://wit.ai/docs/http/20160330#get-intent-via-text-link)
 * `Converse` - the low-level Wit [converse API](https://wit.ai/docs/http/20160330#converse-link)
 * `RunActions` - a higher-level method to the Wit converse API
+* `Interactive` - starts an interactive conversation with your bot
 
 ### Wit class
 
@@ -99,6 +100,15 @@ Example:
 ```c#
 var response = client.Converse("my-user-session-42", "what is the weather in London?", new WitContext());
 Console.WriteLine("Yay, got Wit.ai response: " + resp)
+```
+
+### .Interactive()
+
+Starts an interactive conversation with your bot.
+
+Example:
+```c#
+client.Interactive()
 ```
 
 See the [docs](https://wit.ai/docs) for more information.
