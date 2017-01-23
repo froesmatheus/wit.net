@@ -102,6 +102,15 @@ var response = client.Converse("my-user-session-42", "what is the weather in Lon
 Console.WriteLine("Yay, got Wit.ai response: " + resp)
 ```
 
+### .Interactive()
+
+Starts an interactive conversation with your bot.
+
+Example:
+```c#
+client.Interactive()
+```
+
 See the [docs](https://wit.ai/docs) for more information.
 
 ### Contribute
