@@ -18,7 +18,7 @@ namespace WitAi.Examples
             actions["send"] = Send;
             actions["getForecast"] = GetForecast;
 
-
+            
             Wit wit = new Wit(accessToken: "<SERVER_ACCESS_TOKEN>", actions: actions);
             wit.Converse("session-id-01", "Hi!", new WitContext());
         }

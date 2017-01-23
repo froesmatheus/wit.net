@@ -95,6 +95,47 @@ namespace WitAi
             return response;
         }
 
+        public void Interactive(WitContext context, int maxSteps = 5)
+        {
+            /*Runs interactive command line chat between user and bot. Runs
+              indefinately until EOF is entered to the prompt.
+              
+            context-- optional initial context.Set to { } if omitted
+            maxSteps-- max number of steps for run_actions.*/
+
+            if (this.actions == null)
+            {
+                ThrowMustHaveActions();
+            }
+
+            if (maxSteps <= 0)
+            {
+                throw new WitException("max iterations reached");
+            }
+
+            if (context == null)
+            {
+                context = new WitContext();
+            }
+
+            string message;
+            while (true)
+            {
+                try
+                {
+                    message = Console.ReadLine();
+                }
+                catch (Exception)
+                {
+                    return;
+                }
+
+                var response = this.RunActions("session-id-01", message, context, maxSteps);
+                context = response.Context;
+                Console.WriteLine(response.Message);
+            }
+        }
+
         public BotResponse RunActions(string sessionId, string message, WitContext context,
                                                       int maxSteps = 5, bool verbose = true)
         {
