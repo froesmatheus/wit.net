@@ -48,6 +48,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\EntityResponse.cs" />
+    <Compile Include="Models\Entity.cs" />
     <Compile Include="examples\Quickstart.cs" />
     <Compile Include="examples\Joke.cs" />
     <Compile Include="examples\Basic.cs" />
