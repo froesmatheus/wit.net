@@ -146,7 +146,7 @@ namespace WitAi
 
                 var response = this.RunActions("session-id-01", message, context, maxSteps);
                 context = response.Context;
-                Console.WriteLine(response.Message);
+                response.Messages.ForEach(msg => Console.WriteLine(msg));
             }
         }
 
