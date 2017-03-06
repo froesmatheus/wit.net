@@ -11,6 +11,10 @@ namespace WitAi
     public class Wit
     {
         public string WIT_API_HOST = "https://api.wit.ai";
+
+        /// <summary>
+        /// This parameter is a date that represents the “version” of the Wit API. Default value is 20170107
+        /// </summary>
         public string WIT_API_VERSION = "20170107";
         private string LEARN_MORE = "Learn more at https://wit.ai/docs/quickstart";
 
@@ -39,6 +43,7 @@ namespace WitAi
         private RestClient PrepareRestClient(string accessToken)
         {
             RestClient restClient = new RestClient(WIT_API_HOST);
+
             restClient.AddDefaultHeader("Authorization", $"Bearer {accessToken}");
             restClient.AddDefaultHeader("Content-Type", "application/json");
             restClient.AddDefaultHeader("Accept", "application/json");
@@ -51,7 +56,7 @@ namespace WitAi
         {
             if (!actions.ContainsKey("send"))
             {
-                Console.WriteLine("The send action is missing.");
+                Console.WriteLine("The 'send' action is missing.");
             }
 
             return actions;
@@ -74,6 +79,15 @@ namespace WitAi
             return response;
         }
 
+
+        /// <summary>
+        /// Returns what your bot should do next. The next step can be either answering to the user, performing an action, or waiting for further requests.
+        /// </summary>
+        /// <param name="sessionId">A specific ID of your choosing representing the session your query belongs to</param>
+        /// <param name="message">A message from the user</param>
+        /// <param name="context">Chat context</param>
+        /// <param name="verbose">Calls the API in verbose mode</param>
+        /// <returns <see cref="ConverseResponse"/>>Converse response</returns>
         public ConverseResponse Converse(string sessionId, string message, WitContext context, bool verbose = true)
         {
             if (context == null)
@@ -95,6 +109,56 @@ namespace WitAi
             return response;
         }
 
+
+        /// <summary>
+        /// Runs interactive command line chat between user and bot. Runs indefinately until EOF is entered to the prompt.
+        /// </summary>
+        /// <param name="context">Chat context</param>
+        /// <param name="maxSteps">Max number of steps. Set to { } if omitted</param>
+        public void Interactive(WitContext context = null, int maxSteps = 5)
+        {
+            if (this.actions == null)
+            {
+                ThrowMustHaveActions();
+            }
+
+            if (maxSteps <= 0)
+            {
+                throw new WitException("max iterations reached");
+            }
+
+            if (context == null)
+            {
+                context = new WitContext();
+            }
+
+            string message;
+            while (true)
+            {
+                try
+                {
+                    message = Console.ReadLine();
+                }
+                catch (Exception)
+                {
+                    return;
+                }
+
+                var response = this.RunActions("session-id-01", message, context, maxSteps);
+                context = response.Context;
+                Console.WriteLine(response.Message);
+            }
+        }
+
+        /// <summary>
+        /// A higher-level method to the Wit converse API
+        /// </summary>
+        /// <param name="sessionId">A specific ID of your choosing representing the session your query belongs to</param>
+        /// <param name="message">A message from the user.</param>
+        /// <param name="context">Chat context</param>
+        /// <param name="maxSteps">Max number of steps</param>
+        /// <param name="verbose">Calls the API in verbose mode</param>
+        /// <returns <see cref="BotResponse"/>>The bot response</returns>
         public BotResponse RunActions(string sessionId, string message, WitContext context,
                                                       int maxSteps = 5, bool verbose = true)
         {
@@ -124,7 +188,7 @@ namespace WitAi
 
             botResponse = _RunActions(sessionId, currentRequest, message, botResponse, maxSteps, verbose);
 
-            // Cleaning up once the last call to run_actions finishes.
+            // Cleaning up once the last call to RunActions finishes.
             if (currentRequest == sessions[sessionId])
             {
                 sessions.Remove(sessionId);
@@ -142,9 +206,9 @@ namespace WitAi
                 throw new WitException("Max steps reached, stopping.");
             }
             ConverseResponse json = Converse(sessionId, message, response.Context, verbose);
-            
 
-            if (json.Type == null )
+
+            if (json.Type == null)
             {
                 throw new WitException("Couldn\'t find type in Wit response");
             }
@@ -154,7 +218,7 @@ namespace WitAi
                 return response;
             }
 
-            
+
             // backwards-compatibility with API version 20160516
             if (json.Type == "merge")
             {
@@ -219,6 +283,52 @@ namespace WitAi
 
             return _RunActions(sessionId, currentRequest, null, response, maxSteps - 1, verbose);
         }
+
+        //public IList<string> GetAllEntities()
+        //{
+        //    var request = new RestRequest("entities", Method.GET);
+
+        //    IRestResponse<List<string>> responseObject = client.Execute<List<string>>(request);
+
+        //    return responseObject.Data;
+        //}
+
+        //public void DeleteEntity(string entityId)
+        //{
+        //    var request = new RestRequest($"entities/{entityId}", Method.DELETE);
+
+        //    IRestResponse responseObject = client.Execute(request);
+        //}
+
+
+        //public void DeleteValueFromEntity(string entityId, string entityValue, string expressionValue)
+        //{
+        //    var request = new RestRequest($"entities/{entityId}/values/{entityValue}/expressions/{expressionValue}", Method.DELETE);
+
+        //    IRestResponse responseObject = client.Execute(request);
+        //}
+
+        //public void DeleteExpressionFromEntity(string entityId, string entityValue)
+        //{
+        //    var request = new RestRequest($"entities/{entityId}/values/{entityValue}", Method.DELETE);
+
+        //    IRestResponse responseObject = client.Execute(request);
+        //}
+
+        //public EntityResponse CreateEntity(Entity entity)
+        //{
+        //    var request = new RestRequest("entities", Method.POST);
+        //    request.RequestFormat = DataFormat.Json;
+
+        //    request.AddBody(JsonConvert.SerializeObject(entity));
+
+        //    IRestResponse responseObject = client.Execute(request);
+        //    EntityResponse response = JsonConvert.DeserializeObject<EntityResponse>(responseObject.Content);
+
+
+        //    return response;
+        //}
+
 
         private void ThrowIfActionMissing(string actionName)
         {
