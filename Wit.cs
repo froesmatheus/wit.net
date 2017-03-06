@@ -190,7 +190,9 @@ namespace WitAi
                     ConverseResponse converseResponse = new ConverseResponse();
                     converseResponse.Msg = json.Msg;
                     converseResponse.QuickReplies = json.QuickReplies;
-                    response.Message = converseResponse.Msg;
+
+                    // SDK is able to handle multiple bot responses at the same time
+                    response.Messages.Add(converseResponse.Msg);
 
                     actions["send"](request, converseResponse);
                     //actions["send"](request);
