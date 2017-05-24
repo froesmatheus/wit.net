@@ -29,7 +29,7 @@ You can target a specific version by setting the variable `WIT_API_VERSION`.
 
 The Wit constructor takes the following parameters:
 * `accessToken` - the access token of your Wit instance
-* `actions` - (optional if you only use `message()`) the dictionary with your actions
+* `actions` - (optional if you only use `Message()`) the dictionary with your actions
 
 `actions` has action names as keys and action implementations as values.
 
